@@ -1,0 +1,110 @@
+[
+  {
+    "ticket_id": "T-1001",
+    "category": "refund",
+    "severity": "medium",
+    "injection": false,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1002",
+    "category": "technical_issue",
+    "severity": "low",
+    "injection": false,
+    "needs_human": false,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1003",
+    "category": "account_issue",
+    "severity": "high",
+    "injection": true,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1004",
+    "category": "cancellation",
+    "severity": "low",
+    "injection": false,
+    "needs_human": false,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1005",
+    "category": "payment_failure",
+    "severity": "medium",
+    "injection": false,
+    "needs_human": false,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1006",
+    "category": "refund",
+    "severity": "medium",
+    "injection": false,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1007",
+    "category": "feature_request",
+    "severity": "low",
+    "injection": false,
+    "needs_human": false,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1008",
+    "category": "fraud",
+    "severity": "high",
+    "injection": false,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1009",
+    "category": "refund",
+    "severity": "medium",
+    "injection": false,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1010",
+    "category": "billing",
+    "severity": "low",
+    "injection": false,
+    "needs_human": false,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1011",
+    "category": "general_question",
+    "severity": "high",
+    "injection": true,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  },
+  {
+    "ticket_id": "T-1012",
+    "category": "refund",
+    "severity": "medium",
+    "injection": false,
+    "needs_human": true,
+    "refund_eligible": false,
+    "mode": "rules"
+  }
+]
