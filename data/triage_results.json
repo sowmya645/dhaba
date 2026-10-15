@@ -31,7 +31,7 @@
     "category": "cancellation",
     "severity": "low",
     "injection": false,
-    "needs_human": false,
+    "needs_human": true,
     "refund_eligible": false,
     "mode": "rules"
   },
@@ -40,7 +40,7 @@
     "category": "payment_failure",
     "severity": "medium",
     "injection": false,
-    "needs_human": false,
+    "needs_human": true,
     "refund_eligible": false,
     "mode": "rules"
   },

@@ -1,12 +1,15 @@
 
+import json
 import logging
+import sqlite3
 import time
 import uuid
+from collections import Counter
 
 from fastapi import FastAPI, HTTPException, Request
 
 from app.schemas import TicketInput
-from app.store import claim_ticket, complete_ticket, release_ticket
+from app.store import DB_PATH, claim_ticket, complete_ticket, release_ticket
 from app.triage import triage_ticket
 
 logging.basicConfig(level=logging.INFO)
@@ -14,7 +17,7 @@ logger = logging.getLogger("dhaba")
 
 app = FastAPI(
     title="Dhaba Support Triage API",
-    version="0.2.0",
+    version="0.3.0",
 )
 
 
@@ -77,7 +80,7 @@ def triage(request: Request, ticket: TicketInput):
         2,
     )
 
-    # Log metadata only; never log the subject, body, or purchases.
+    # Log metadata only; never log subject, body, or purchases.
     logger.info(
         "triage_done request_id=%s ticket_id=%s category=%s "
         "needs_human=%s injection=%s latency_ms=%s",
@@ -94,7 +97,55 @@ def triage(request: Request, ticket: TicketInput):
 
 @app.get("/metrics")
 def metrics():
+    """Return aggregate metrics from persisted completed triages."""
+
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+            rows = connection.execute(
+                """
+                SELECT result_json
+                FROM triage_results
+                WHERE status = ?
+                """,
+                ("completed",),
+            ).fetchall()
+
+    except sqlite3.Error:
+        logger.exception("metrics_query_failed")
+        raise HTTPException(
+            status_code=500,
+            detail="Metrics are temporarily unavailable.",
+        )
+
+    results = []
+
+    for (result_json,) in rows:
+        try:
+            results.append(json.loads(result_json))
+        except (json.JSONDecodeError, TypeError):
+            # Ignore malformed stored results rather than expose their data.
+            continue
+
+    categories = Counter(
+        result["category"]
+        for result in results
+        if isinstance(result.get("category"), str)
+    )
+
     return {
         "service": "dhaba-triage",
-        "metrics_status": "basic",
+        "metrics_source": "persisted_completed_triages",
+        "total_completed": len(results),
+        "needs_human_review": sum(
+            result.get("needs_human") is True for result in results
+        ),
+        "prompt_injection_detected": sum(
+            result.get("prompt_injection_detected") is True
+            for result in results
+        ),
+        "rules_fallback_count": sum(
+            result.get("processing_mode") == "rules_fallback"
+            for result in results
+        ),
+        "category_counts": dict(categories),
     }

@@ -68,3 +68,14 @@ class TicketInput(BaseModel):
     body: StrictStr = Field(min_length=1, max_length=10000)
     purchases: list[Purchase] = Field(max_length=100)
     app_opens_since_renewal: StrictInt = Field(ge=0)
+
+class ModelOutput(BaseModel):
+    """Validated classification output from replay or an AI model."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    category: Category
+    severity: Severity
+    confidence: float = Field(ge=0.0, le=1.0)
+    confidence_reason: StrictStr = Field(min_length=1, max_length=500)
+    reply_draft: StrictStr = Field(min_length=1, max_length=2000)
